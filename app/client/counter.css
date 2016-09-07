@@ -1,0 +1,315 @@
+/*
+ * Global Margins Paddings und Co.
+ ********************/
+.global-margin-20 {
+ margin-bottom:20px;
+}
+/*
+* Global Body Style
+*****************************/
+body {
+  background-color: #000
+}
+
+/*
+ * Header Styling
+ ****************************/
+nav {
+  background-color: #004188;
+}
+.navbar {
+  border-bottom: 1px solid black;
+  margin: 0;
+}
+UL.navbar-nav {
+  margin: 7px 0;
+}
+.icon-bar{
+  background-color: white;
+}
+
+.navbar-brand{
+  font-weight: bold;
+}
+
+.userName{
+  font-size: 18px;
+  font-weight: bold;
+  float: left;
+  padding: 8px 5px;
+  line-height:20px;
+}
+
+/*
+ * Colors
+ ****************************/
+ .font-white {
+   color: white;
+ }
+ .font-black{
+   color: black;
+ }
+ a .font-white{
+   color: white;
+ }
+ a .font-white, a:hover{
+   color: white;
+   text-decoration: none;
+ }
+.bg-color-black {
+  background-color: #000;
+}
+.bg-color-white {
+  background-color: white;
+}
+.bg-color-yellow {
+  background-color: yellow;
+}
+.bg-color-red {
+  background-color: red;
+}
+
+ .s-alert-success{
+   background-color: #5cb85c;
+ }
+ .s-alert-error{
+   background-color: #d9534f;
+ }
+
+.content-wrapper {
+  width: 100%;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+}
+.fontColorGreen{
+  color: green;
+}
+.fontColorRed{
+  color: red;
+}
+
+/*
+ * Counter Style
+ ******************************************/
+
+.counter {
+  text-align: center;
+  font-size: 600px;
+}
+
+
+/*
+* Logo Style
+*******************************************/
+#logo {
+  width: 50%;
+}
+
+/*
+* Table Style
+*******************************************/
+.myTable {
+  text-align: left;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/*
+ * Partner List
+ ******************************************/
+.partnerList{
+ list-style-type: none;
+}
+ul{
+    margin-left: -40px;
+}
+/*ul.partnerList li {
+    list-style-type: none;
+    clear: left;
+}*/
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+/*ul.partnerList li {
+    font-size: 18px;
+}
+
+ul.partnerList img {
+    float: left;
+    width: 30%;
+    margin-right: 20px;
+    margin-bottom: 30px;
+}*/
+img {
+    max-width: 100%;
+    vertical-align: middle;
+}
+.logo{
+  width:  50%;
+  height: auto;
+}
+ul.partnerList {
+    margin-left: 0px;
+    width: 100%;
+    display: table;
+    table-layout: fixed; /* optional, for equal spacing */
+    border-collapse: collapse;
+}
+ul.partnerList li {
+    display: table-cell;
+    text-align: center;
+    border: 10px solid white;
+    vertical-align: middle;
+}
+ul.partnerList img {
+    float: left;
+}
+
+
+
+MAIN {
+  padding-top: 50px;
+  min-height: calc(100vh - 73px);
+}
+footer {
+  position:relative;;
+  bottom: -22px;
+  width: 100%;
+  background-color: #004188;
+  height: auto;
+  border-top: 1px solid black;
+  font-size: 14px;
+  font-weight: bold;
+}
+footer .list-inline {
+  margin:0 auto;
+  text-align: center;
+  color: white;
+}
+footer .footer-txt {
+  line-height: 50px;
+}
+
+.align_top{
+  margin-top: 0px;
+}
+
+.textAlignCenter{
+  text-align: center;
+}
+.textAlignLeft{
+  text-align: left;
+}
+.textAlignRight{
+  text-align: right;
+}
+
+.serviceBtn{
+  white-space: normal;
+}
+
+.serviceTable{
+  width: 100%;
+}
+
+.iconSize{
+  /*font-size: 18px;*/
+  width: 18px;
+}
+.hiddenRow {
+    padding: 0 !important;
+}
+/*
+ * Spinner
+ *************************************/
+ .sk-cube-grid {
+   width: 80px;
+   height: 80px;
+   margin: 100px auto;
+ }
+
+ .sk-cube-grid .sk-cube {
+   width: 33%;
+   height: 33%;
+   background-color: #004188;
+   float: left;
+   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+           animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+ }
+ .sk-cube-grid .sk-cube1 {
+   -webkit-animation-delay: 0.2s;
+           animation-delay: 0.2s; }
+ .sk-cube-grid .sk-cube2 {
+   -webkit-animation-delay: 0.3s;
+           animation-delay: 0.3s; }
+ .sk-cube-grid .sk-cube3 {
+   -webkit-animation-delay: 0.4s;
+           animation-delay: 0.4s; }
+ .sk-cube-grid .sk-cube4 {
+   -webkit-animation-delay: 0.1s;
+           animation-delay: 0.1s; }
+ .sk-cube-grid .sk-cube5 {
+   -webkit-animation-delay: 0.2s;
+           animation-delay: 0.2s; }
+ .sk-cube-grid .sk-cube6 {
+   -webkit-animation-delay: 0.3s;
+           animation-delay: 0.3s; }
+ .sk-cube-grid .sk-cube7 {
+   -webkit-animation-delay: 0s;
+           animation-delay: 0s; }
+ .sk-cube-grid .sk-cube8 {
+   -webkit-animation-delay: 0.1s;
+           animation-delay: 0.1s; }
+ .sk-cube-grid .sk-cube9 {
+   -webkit-animation-delay: 0.2s;
+           animation-delay: 0.2s; }
+
+ @-webkit-keyframes sk-cubeGridScaleDelay {
+   0%, 70%, 100% {
+     -webkit-transform: scale3D(1, 1, 1);
+             transform: scale3D(1, 1, 1);
+   } 35% {
+     -webkit-transform: scale3D(0, 0, 1);
+             transform: scale3D(0, 0, 1);
+   }
+ }
+
+ @keyframes sk-cubeGridScaleDelay {
+   0%, 70%, 100% {
+     -webkit-transform: scale3D(1, 1, 1);
+             transform: scale3D(1, 1, 1);
+   } 35% {
+     -webkit-transform: scale3D(0, 0, 1);
+             transform: scale3D(0, 0, 1);
+   }
+ }
+
+
+ /**
+  * media queries from bootstrap grid
+  */
+  @media (max-width: 768px) {
+    .content-wrapper {
+      width: 100%;
+    }
+    ul.partnerList img {
+      width: 100%;
+    }
+  }
+
+ @media (min-width: 768px) and (max-width: 991px) {
+   .content-wrapper {
+     width: 100%;
+   }
+ }
+
+ @media (min-width: 992px) and (max-width: 1199px) {
+ }
+
+ @media (min-width: 1200px) {
+ }
