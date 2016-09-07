@@ -137,19 +137,25 @@ Template.counter.helpers({
     Session.set('presentationTime', controller.presentationTime);
 
     //Meteor.call("updateClientCounter", clientIpAddr, Session.get('minutes'), Session.get('seconds'), Session.get('overtimeFlag'), function(){})
-    Meteor.call("updateCounterController", clientIpAddr, Session.get('minutes'), Session.get('seconds'), Session.get('overtimeFlag'), function(){})
-
-    //if slave client set flag to true
-    if(clientIpAddr !== controller.masterIp && controller.masterIp !== "-1"){
-      slaveClient = true;
+    if(clientIpAddr === controller.masterIp || controller.masterIp === "-1"){
+      Meteor.call("updateCounterController", clientIpAddr, Session.get('minutes'), Session.get('seconds'), Session.get('overtimeFlag'), function(){})
     }
 
-    // get time from server in case client is slaveClient
-    if(slaveClient){
+    //if slave client -> set flag to true
+    if(clientIpAddr !== controller.masterIp && controller.masterIp !== "-1"){
       Session.set('minutes', controller.currentMin);
       Session.set('seconds', controller.currentSec);
       Session.set('overtimeFlag', controller.overtime);
+      //slaveClient = true;
     }
+    // else {
+    //   slaveClient = false;
+    // }
+    //
+    // // get time from server in case client is slaveClient
+    // if(slaveClient){
+    //
+    // }
 
     return "";
   }

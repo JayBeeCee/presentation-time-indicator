@@ -2,9 +2,7 @@
 Meteor.publish("counterController", function() {
   return CounterController.find();
 });
-Meteor.publish("activeClients", function() {
-  return ActiveClients.find();
-});
+
 
 //variables
 var PRESENTATION_TIME = 60*20; // 20 minutes
@@ -13,21 +11,44 @@ var PRESENTATION_TIME = 60*20; // 20 minutes
 
  // Startup
  Meteor.startup(function(){
-   if (CounterController.find().count() === 0) {
+   if(CounterController.find().count() === 0){
      CounterController.insert({
-       masterIp: "-1",
-       startFlag: false,
-       pauseFlag: false,
-       startTime: "-1",
-       presentationTime: PRESENTATION_TIME,
-       currentMin: "-1",
-       currentSec: "-1",
-       overtime: "-1"
-     });
-   }
+        masterIp: "-1",
+        startFlag: false,
+        pauseFlag: false,
+        startTime: "-1",
+        presentationTime: PRESENTATION_TIME,
+        currentMin: "-1",
+        currentSec: "-1",
+        overtime: "-1"
+      });
+    }
+   Meteor.call("checkMasterAvailable");
  });
 
 Meteor.methods({
+  checkMasterAvailable: function(){
+    Meteor.setInterval(function() {
+      //get collection
+      var counter = CounterController.findOne();
+      // get connections
+      var users = UserStatus.connections.find().fetch();
+      //set flags
+      var masterActive = false;
+
+      // check if masterClient is connected
+      _.each(users, function(user){
+        if(user.ipAddr === counter.masterIp){
+          masterActive = true;
+        }
+      },this);
+
+      // in case "master" is not active anymore, set masterIp to default to find new "master"
+      if( masterActive === false ){
+        CounterController.update({_id: counter._id},{$set: {masterIp: "-1"}});
+      }
+    }, 1000*10);
+  },
   // updateActiveClients: function() {
   //   //get all active clients
   //   var users = UserStatus.connections.find().fetch();
@@ -71,15 +92,17 @@ Meteor.methods({
   //   ActiveClients.update({_id: client._id},{$set: {currentMin: minutes, currentSec: seconds, overtime: overtime}})
   // },
   updateCounterController: function(clientIp, minutes, seconds, overtime){
+    //get collection
     var counter = CounterController.findOne();
-    //set "master" client
+
+    //set new "master" client
     if(counter.masterIp === "-1"){
-      CounterController.update({_id: counter._id},{$set: {masterIp: clientIp}})
+      CounterController.update({_id: counter._id},{$set: {masterIp: clientIp}});
     }
 
     // only let the "master" client sync the time with the server
     if(counter.masterIp === clientIp){
-      CounterController.update({_id: counter._id},{$set: {currentMin: minutes, currentSec: seconds, overtime: overtime}})
+      CounterController.update({_id: counter._id},{$set: {currentMin: minutes, currentSec: seconds, overtime: overtime}});
     }
   }
 });
