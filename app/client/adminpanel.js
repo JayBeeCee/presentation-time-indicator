@@ -6,7 +6,8 @@ Template.adminpanel.onRendered(function() {
 Template.adminpanel.helpers({
   clients: function() {
     //return ActiveClients.find();
-    return CounterController.find();
+    var roomName = this.toString();
+    return CounterController.find({room: roomName});
   },
   status: function(){
     if(this.startFlag && !this.pauseFlag) return "running";
@@ -62,6 +63,6 @@ Template.adminpanel.events({
   'click #stopBtn': function(){
     // reset start and stop bool
     // ActiveClients.update({_id: this._id},{$set: {startFlag: false, pauseFlag: false}});
-    CounterController.update({_id: this._id},{$set: {startFlag: false, pauseFlag: false}});
+    CounterController.update({_id: this._id},{$set: {startFlag: false, pauseFlag: false, startTime: "-1"}});
   }
 });

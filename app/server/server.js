@@ -1,6 +1,6 @@
 //publish collections to clients
-Meteor.publish("counterController", function() {
-  return CounterController.find();
+Meteor.publish("counterController", function(roomName) {
+  return CounterController.find({room: roomName});
 });
 
 
@@ -13,6 +13,7 @@ var PRESENTATION_TIME = 60*20; // 20 minutes
  Meteor.startup(function(){
    if(CounterController.find().count() === 0){
      CounterController.insert({
+        room: "zuse",
         masterIp: "-1",
         startFlag: false,
         pauseFlag: false,
@@ -22,6 +23,17 @@ var PRESENTATION_TIME = 60*20; // 20 minutes
         currentSec: "-1",
         overtime: "-1"
       });
+      CounterController.insert({
+         room: "turing",
+         masterIp: "-1",
+         startFlag: false,
+         pauseFlag: false,
+         startTime: "-1",
+         presentationTime: PRESENTATION_TIME,
+         currentMin: "-1",
+         currentSec: "-1",
+         overtime: "-1"
+       });
     }
    Meteor.call("checkMasterAvailable");
  });
@@ -30,23 +42,23 @@ Meteor.methods({
   checkMasterAvailable: function(){
     Meteor.setInterval(function() {
       //get collection
-      var counter = CounterController.findOne();
+      var counters = CounterController.find().fetch();
       // get connections
       var users = UserStatus.connections.find().fetch();
-      //set flags
-      var masterActive = false;
 
-      // check if masterClient is connected
-      _.each(users, function(user){
-        if(user.ipAddr === counter.masterIp){
-          masterActive = true;
+      _.each(counters, function(counter){
+        var masterActive = false;
+        // check if masterClient is connected
+        _.each(users, function(user){
+          if(user.ipAddr === counter.masterIp){
+            masterActive = true;
+          }
+        },this);
+        // in case "master" is not active anymore, set masterIp to default to find new "master"
+        if( masterActive === false ){
+          CounterController.update({_id: counter._id},{$set: {masterIp: "-1"}});
         }
-      },this);
-
-      // in case "master" is not active anymore, set masterIp to default to find new "master"
-      if( masterActive === false ){
-        CounterController.update({_id: counter._id},{$set: {masterIp: "-1"}});
-      }
+      }, this);
     }, 1000*10);
   },
   // updateActiveClients: function() {
@@ -91,9 +103,9 @@ Meteor.methods({
   //   var client = ActiveClients.findOne( {clientIp: clientIp});
   //   ActiveClients.update({_id: client._id},{$set: {currentMin: minutes, currentSec: seconds, overtime: overtime}})
   // },
-  updateCounterController: function(clientIp, minutes, seconds, overtime){
+  updateCounterController: function(clientIp, roomName, minutes, seconds, overtime){
     //get collection
-    var counter = CounterController.findOne();
+    var counter = CounterController.findOne({room: roomName});
 
     //set new "master" client
     if(counter.masterIp === "-1"){

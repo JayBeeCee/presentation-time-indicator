@@ -43,15 +43,18 @@ Router.configure({
 /**
  * default route
  */
-Router.route('/', {
+Router.route('/home/:room', {
   name: 'counter',
   template: 'counter',
   //onBeforeAction: [OnBeforeActions.userRequired],
   subscriptions: function(){
     return [
       //Meteor.subscribe('activeClients'),
-      Meteor.subscribe('counterController')
+      Meteor.subscribe('counterController', this.params.room)
     ];
+  },
+  data: function(){
+    return this.params.room;
   },
   action: function() {
     if(this.ready()){
@@ -65,14 +68,39 @@ Router.route('/', {
 /**
  * routes for adminpanel
  */
- Router.route('/adminpanel', {
+ Router.route('/adminpanel/:room', {
    name: 'adminpanel',
    template: 'adminpanel',
    subscriptions: function(){
      return [
        //Meteor.subscribe('activeClients'),
-       Meteor.subscribe('counterController')
+       Meteor.subscribe('counterController', this.params.room)
      ];
+   },
+   data: function(){
+     return this.params.room;
+   },
+   action: function() {
+     if(this.ready()){
+        this.render();
+     } else {
+        this.render('spinnerCube');
+     }
+   }
+ });
+
+
+ Router.route('/setmaster/:room', {
+   name: 'setmaster',
+   template: 'setmaster',
+   subscriptions: function(){
+     return [
+       //Meteor.subscribe('activeClients'),
+       Meteor.subscribe('counterController', this.params.room)
+     ];
+   },
+   data: function(){
+     return this.params.room;
    },
    action: function() {
      if(this.ready()){

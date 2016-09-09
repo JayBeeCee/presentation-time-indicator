@@ -20,7 +20,7 @@ Meteor.startup(function() {
 });
 
 // variables
-var start, diff;
+var start, diff, pause, timePassed, pausedTime=0;
 var slaveClient = false;
 var presentationTime = 60*20; // default = 20 minutes
 minutes = presentationTime/60;
@@ -35,37 +35,32 @@ function counter () {
     //PRESENTATION_TIME = Session.get('presentationTime');
     // get the number of seconds that have elapsed since
     // the counter started
-    diff = (presentationTime) - (((Date.now() - Session.get('startTime')) / 1000) | 0);
+    timePassed = (((Date.now() - Session.get('startTime')) / 1000) | 0);
+    //add paused time to presentation time
+    presentationTime = presentationTime + pausedTime;
+    //diff = time passed
+    diff = (presentationTime) - timePassed;
 
     // truncates the float
     minutes = (diff / 60) | 0;
     seconds = (diff % 60) | 0;
-
-    // times up -> overtimeFlag will be set once
-    if(Session.get('overtimeFlag') === false){
-      seconds < 0 ? Session.set('overtimeFlag', true) : Session.set('overtimeFlag', false);
-    }
+    pausedTime = 0;
 
     if (diff <= 0) {
         // add one second so that the countdown starts at the full duration
         // example 05:00 not 04:59
         start = Date.now() + 1000;
     }
-
-
     // save minutes and seconds in Session variable to display on screen
     // only do this for master client
     // slaveClient will use time from server
     if(slaveClient === false){
-
       // times up -> overtimeFlag will be set once
       if(Session.get('overtimeFlag') === false){
         seconds < 0 ? Session.set('overtimeFlag', true) : Session.set('overtimeFlag', false);
       }
-
       Session.set('minutes', minutes);
       Session.set('seconds', seconds);
-
     }
 
     // Counter stopped
@@ -81,12 +76,19 @@ function counter () {
 
     //counter paused
   } else if(Session.get('pauseFlag')===true) {
-    presentationTime++;
+    pausedTime = (((Date.now() - Session.get('startTime')) / 1000) | 0) - timePassed + 1;
   }
 }
 
 // check Status of service to display correct button-style
 Template.counter.helpers({
+  paused: function(){
+    if(Session.get('pauseFlag') === true){
+      return "PAUSED";
+    } else {
+      return "Remaining presentation time in minutes:";
+    }
+  },
   seconds: function() {
     seconds = Session.get('seconds');
     // set prefixes
@@ -127,10 +129,12 @@ Template.counter.helpers({
   },
   controller: function(){
     var clientIpAddr = headers.getClientIP();
+    //read room from URL (data from router)
+    var roomName = this.toString();
     Session.set('clientIp',clientIpAddr);
     //return ActiveClients.findOne({clientIp: clientIpAddr})
     //var controller = ActiveClients.findOne({clientIp: clientIpAddr});
-    var controller = CounterController.findOne();
+    var controller = CounterController.findOne({room: roomName});
     Session.set('startFlag', controller.startFlag);
     Session.set('pauseFlag', controller.pauseFlag);
     Session.set('startTime', controller.startTime);
@@ -138,7 +142,7 @@ Template.counter.helpers({
 
     //Meteor.call("updateClientCounter", clientIpAddr, Session.get('minutes'), Session.get('seconds'), Session.get('overtimeFlag'), function(){})
     if(clientIpAddr === controller.masterIp || controller.masterIp === "-1"){
-      Meteor.call("updateCounterController", clientIpAddr, Session.get('minutes'), Session.get('seconds'), Session.get('overtimeFlag'), function(){})
+      Meteor.call("updateCounterController", clientIpAddr, roomName, Session.get('minutes'), Session.get('seconds'), Session.get('overtimeFlag'), function(){})
     }
 
     //if slave client -> set flag to true
@@ -146,16 +150,8 @@ Template.counter.helpers({
       Session.set('minutes', controller.currentMin);
       Session.set('seconds', controller.currentSec);
       Session.set('overtimeFlag', controller.overtime);
-      //slaveClient = true;
+      slaveClient = true;
     }
-    // else {
-    //   slaveClient = false;
-    // }
-    //
-    // // get time from server in case client is slaveClient
-    // if(slaveClient){
-    //
-    // }
 
     return "";
   }

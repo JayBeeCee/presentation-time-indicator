@@ -7,7 +7,7 @@
               <thead>
                 <tr>
                   <!-- <th>IP</th> -->
-                  <th> ID </th>
+                  <th>Master </th>
                   <th>Current Time</th>
                   <th>Counter Status</th>
                   <th><span aria-hidden="true" title="Start Timer"></span> Start </th>
@@ -19,7 +19,7 @@
                 {{#each clients}}
                   <tr>
                     <!-- <td>{{clientIp}}</td> -->
-                    <td> {{_id}} </td>
+                    <td>{{masterIp}} </td>
                     <td>{{time}}</td>
                     <td>{{status}}</td>
                     <td><span id="startBtn" class="glyphicon glyphicon-play" aria-hidden="true" title="Start Timer"></span> </td>
