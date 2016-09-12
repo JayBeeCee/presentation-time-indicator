@@ -1,5 +1,5 @@
 Template.adminpanel.onRendered(function() {
-  $('body').addClass('bg-color-white');
+  $('body').addClass('bg-color-white').removeClass('bg-color-grey');
 });
 
 
