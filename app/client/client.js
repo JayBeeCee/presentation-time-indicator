@@ -1,7 +1,4 @@
 Meteor.startup(function() {
-  // tell server to update client list
-  // Meteor.call("updateActiveClients", function(){
-  // });
   // start Counter
   setInterval(counter, 1000);
   //alert configuration
@@ -73,6 +70,7 @@ function counter () {
     minutes = 0;
     seconds = 0;
     diff = 0;
+    $('body').addClass('bg-color-grey').removeClass('bg-color-red').removeClass('bg-color-yellow').removeClass('bg-color-black');
 
     //counter paused
   } else if(Session.get('pauseFlag')===true) {
@@ -107,7 +105,7 @@ Template.counter.helpers({
     } else if (minutes < 5){
       $('body').addClass('bg-color-yellow').removeClass('bg-color-red');
     } else{
-      $('body').addClass('bg-color-black').removeClass('bg-color-yellow').removeClass('bg-color-red');
+      $('body').addClass('bg-color-black').removeClass('bg-color-yellow').removeClass('bg-color-red').removeClass('bg-color-grey');
     }
 
     //set prefixes
@@ -144,7 +142,6 @@ Template.counter.helpers({
     if(clientIpAddr === controller.masterIp || controller.masterIp === "-1"){
       Meteor.call("updateCounterController", clientIpAddr, roomName, Session.get('minutes'), Session.get('seconds'), Session.get('overtimeFlag'), function(){})
     }
-
     //if slave client -> set flag to true
     if(clientIpAddr !== controller.masterIp && controller.masterIp !== "-1"){
       Session.set('minutes', controller.currentMin);
