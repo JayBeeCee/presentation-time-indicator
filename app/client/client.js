@@ -70,6 +70,7 @@ function counter () {
     minutes = 0;
     seconds = 0;
     diff = 0;
+    pausedTime=0;
     $('body').addClass('bg-color-grey').removeClass('bg-color-red').removeClass('bg-color-yellow').removeClass('bg-color-black');
 
     //counter paused

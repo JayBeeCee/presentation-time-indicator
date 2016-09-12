@@ -298,7 +298,7 @@ footer .footer-txt {
   */
   @media (max-width: 768px) {
     .content-wrapper {
-      width: 100%;
+      width: 70%;
     }
     ul.partnerList img {
       width: 100%;
@@ -307,7 +307,7 @@ footer .footer-txt {
 
  @media (min-width: 768px) and (max-width: 991px) {
    .content-wrapper {
-     width: 100%;
+     width: 70%;
    }
  }
 
